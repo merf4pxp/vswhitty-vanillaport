@@ -86,7 +86,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitLeft.frames = FlxAtlasFrames.fromSparrow('assets/images/bonusWeek/whittyPort.png', 'assets/images/bonusWeek/whittyPort.xml');
 		portraitLeft.animation.addByPrefix('enter', 'Whitty Portrait Normal', 24, false);
 		portraitLeft.animation.addByPrefix('grr', 'Whitty Portrait Agitated', 24, false);
-		portraitLeft.animation.addByPrefix('crazy', 'Whitty Portrait Crazy', 24, false);
+		portraitLeft.animation.addByPrefix('crazy', 'Whitty Portrait Crazy', 24);
 		portraitLeft.antialiasing = true;
 		portraitLeft.updateHitbox();
         portraitLeft.scrollFactor.set();
@@ -272,11 +272,17 @@ class DialogueBox extends FlxSpriteGroup
 					portraitLeft.visible = true;
 					portraitLeft.animation.play('enter');
 				}
+				
 				if (PlayState.SONG.song.toLowerCase() == 'lo-fight' || PlayState.SONG.song.toLowerCase() == 'overhead' || PlayState.SONG.song.toLowerCase() == 'ballistic')
 				{
 					swagDialogue.sounds = [FlxG.sound.load('assets/sounds/dialogue/whitty' + TitleState.soundExt, 0.6)];
+					if (PlayState.SONG.song.toLowerCase() == 'overhead')
+					{
+						portraitLeft.animation.play('grr');
+					}
 					if (PlayState.SONG.song.toLowerCase() == 'ballistic')
 					{
+						portraitLeft.animation.play('crazy');
 						swagDialogue.sounds = [FlxG.sound.load('assets/sounds/dialogue/ballistic' + TitleState.soundExt, 0.6)];
 					}
 				}
