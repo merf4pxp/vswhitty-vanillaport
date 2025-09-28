@@ -28,6 +28,8 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
 
+    public static var newInput:Bool = true;
+	public static var oldInput:Bool = false;
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
@@ -93,6 +95,15 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		if (!newInput){
+			oldInput = true;
+		}
+		
+		var inputSelection:FlxText = new FlxText(5, FlxG.height - 50, 0, "Use new input system (Press right or left):" + newInput, 12);
+		inputSelection.scrollFactor.set();
+		inputSelection.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(inputSelection);
+
 		// NG.core.calls.event.logEvent('swag').send();
 
 		changeItem();
@@ -121,6 +132,18 @@ class MainMenuState extends MusicBeatState
 			{
 				FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
 				changeItem(1);
+			}
+
+			if (controls.LEFT_P)
+			{
+				oldInput = true;
+				newInput = false;
+			}
+
+			if (controls.RIGHT_P)
+			{
+				newInput = true;
+				oldInput = false;
 			}
 
 			if (controls.BACK)

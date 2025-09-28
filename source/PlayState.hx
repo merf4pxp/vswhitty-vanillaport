@@ -77,6 +77,16 @@ class PlayState extends MusicBeatState
 	private var gfSpeed:Int = 1;
 	private var health:Float = 1;
 	private var combo:Int = 0;
+	private var misses:Int = 0;
+	private var accuracy:Float = 0.00;
+	private var totalNotesHit:Float = 0;
+	private var totalPlayed:Int = 0;
+	private var fc:Bool = true;
+	private var rank:String = "FC";
+
+	var wBg:FlxSprite;
+	var nwBg:FlxSprite;
+	var wstageFront:FlxSprite;
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
@@ -105,13 +115,6 @@ class PlayState extends MusicBeatState
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
 	var santa:FlxSprite;
-
-	var wstageFront:FlxSprite;
-	var wBg:FlxSprite;
-	var nwBg:FlxSprite;
-	var funneEffect:FlxSprite;
-	
-	var forDiaPath = 'assets/data';
 
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
@@ -365,54 +368,6 @@ class PlayState extends MusicBeatState
 			evilSnow.antialiasing = true;
 			add(evilSnow);
 		}
-		else if (SONG.song.toLowerCase() == 'lo-fight' || SONG.song.toLowerCase() == 'overhead' || SONG.song.toLowerCase() == 'ballistic')
-		{
-			defaultCamZoom = 0.9;
-			curStage = 'alley';
-
-			wBg = new FlxSprite(-500, -300).loadGraphic('assets/images/bonusWeek/whittyBack.png');
-
-			if (SONG.song.toLowerCase() == 'ballistic')
-			{
-				wBg.antialiasing = true;
-			    var bgTex = FlxAtlasFrames.fromSparrow('assets/images/bonusWeek/BallisticBackground.png', 'assets/images/bonusWeek/BallisticBackground.xml');
-                nwBg = new FlxSprite(-600, -200);
-                nwBg.frames = bgTex;
-                nwBg.antialiasing = true;
-                nwBg.scrollFactor.set(0.9, 0.9);
-              nwBg.active = true;
-              nwBg.animation.addByPrefix('start', 'Background Whitty Start', 24, false);
-              nwBg.animation.addByPrefix('gaming', 'Background Whitty Startup', 24, false);
-              nwBg.animation.addByPrefix('gameButMove', 'Background Whitty Moving', 16, true);
-              add(wBg);
-              add(nwBg);
-              nwBg.alpha = 0;
-			  
-              wstageFront = new FlxSprite(-650, 600).loadGraphic('assets/images/bonusWeek/whittyFront.png');
-              wstageFront.setGraphicSize(Std.int(wstageFront.width * 1.1));
-              wstageFront.updateHitbox();
-              wstageFront.antialiasing = true;
-              wstageFront.scrollFactor.set(0.9, 0.9);
-              wstageFront.active = false;
-              add(wBg);
-              add(wstageFront);
-			}
-			else
-			{
-				 wBg.antialiasing = true;
-              wBg.scrollFactor.set(0.9, 0.9);
-              wBg.active = false;
-
-              wstageFront = new FlxSprite(-650, 600).loadGraphic('assets/images/bonusWeek/whittyFront.png');
-              wstageFront.setGraphicSize(Std.int(wstageFront.width * 1.1));
-              wstageFront.updateHitbox();
-              wstageFront.antialiasing = true;
-              wstageFront.scrollFactor.set(0.9, 0.9);
-              wstageFront.active = false;
-              add(wBg);
-              add(wstageFront);
-			}
-		}
 		else if (SONG.song.toLowerCase() == 'senpai' || SONG.song.toLowerCase() == 'roses')
 		{
 			curStage = 'school';
@@ -542,6 +497,73 @@ class PlayState extends MusicBeatState
 				add(waveSpriteFG);
 			 */
 		}
+		else if (SONG.song.toLowerCase() == 'lo-fight' || SONG.song.toLowerCase() == 'overhead' || SONG.song.toLowerCase() == 'ballistic')
+		{
+			defaultCamZoom = 0.9;
+			curStage = 'alley';
+
+			wBg = new FlxSprite(-500, -300).loadGraphic('assets/images/bonusWeek/whittyBack.png');
+
+			if (SONG.song.toLowerCase() == 'ballistic')
+			{
+				if (isStoryMode)
+				{
+					wBg.antialiasing = true;
+			    var bgTex = FlxAtlasFrames.fromSparrow('assets/images/bonusWeek/BallisticBackground.png', 'assets/images/bonusWeek/BallisticBackground.xml');
+                nwBg = new FlxSprite(-600, -200);
+                nwBg.frames = bgTex;
+                nwBg.antialiasing = true;
+                nwBg.scrollFactor.set(0.9, 0.9);
+              nwBg.active = true;
+              nwBg.animation.addByPrefix('start', 'Background Whitty Start', 24, false);
+              nwBg.animation.addByPrefix('gaming', 'Background Whitty Startup', 24, false);
+              nwBg.animation.addByPrefix('gameButMove', 'Background Whitty Moving', 16, true);
+              add(wBg);
+              add(nwBg);
+              nwBg.alpha = 0;
+			  
+              wstageFront = new FlxSprite(-650, 600).loadGraphic('assets/images/bonusWeek/whittyFront.png');
+              wstageFront.setGraphicSize(Std.int(wstageFront.width * 1.1));
+              wstageFront.updateHitbox();
+              wstageFront.antialiasing = true;
+              wstageFront.scrollFactor.set(0.9, 0.9);
+              wstageFront.active = false;
+              add(wBg);
+              add(wstageFront);
+				}
+				else
+				{
+					var bgTex = FlxAtlasFrames.fromSparrow('assets/images/bonusWeek/BallisticBackground.png', 'assets/images/bonusWeek/BallisticBackground.xml');
+                nwBg = new FlxSprite(-600, -200);
+                nwBg.frames = bgTex;
+                nwBg.antialiasing = true;
+                nwBg.scrollFactor.set(0.9, 0.9);
+              nwBg.active = true;
+              nwBg.animation.addByPrefix('start', 'Background Whitty Start', 24, false);
+              nwBg.animation.addByPrefix('gaming', 'Background Whitty Startup', 24, false);
+              nwBg.animation.addByPrefix('gameButMove', 'Background Whitty Moving', 16, true);
+			  nwBg.animation.play('gameButMove');
+              add(nwBg);
+				}
+				
+			}
+			else
+			{
+				 wBg.antialiasing = true;
+              wBg.scrollFactor.set(0.9, 0.9);
+              wBg.active = false;
+
+              wstageFront = new FlxSprite(-650, 600).loadGraphic('assets/images/bonusWeek/whittyFront.png');
+              wstageFront.setGraphicSize(Std.int(wstageFront.width * 1.1));
+              wstageFront.updateHitbox();
+              wstageFront.antialiasing = true;
+              wstageFront.scrollFactor.set(0.9, 0.9);
+              wstageFront.active = false;
+              add(wBg);
+              add(wstageFront);
+			}
+		}
+
 		else
 		{
 			defaultCamZoom = 0.9;
@@ -736,7 +758,7 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 175, healthBarBG.y + 50, 0, "", 20);
 		scoreTxt.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
@@ -811,6 +833,7 @@ class PlayState extends MusicBeatState
 				case 'ballistic':
 					turnToCrazyWhitty();
 					whittyAnimation(doof);
+
 				default:
 					startCountdown();
 			}
@@ -908,8 +931,6 @@ class PlayState extends MusicBeatState
 						add(animation);
 		
 						camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-		
-						remove(funneEffect);
 		
 						wind.fadeIn();
 						camHUD.visible = false;
@@ -1513,6 +1534,38 @@ class PlayState extends MusicBeatState
 		generatedMusic = true;
 	}
 
+	function updateAccuracy()
+	{
+		totalPlayed += 1;
+		accuracy = totalNotesHit / totalPlayed * 100;
+		if (accuracy >= 100.00)
+		{
+			if (fc && misses == 0)
+				accuracy = 100.00;
+			else
+			{
+				accuracy = 99.98;
+			    fc = false;
+			}
+				
+		}
+
+		if (fc)
+			rank = "FC";
+		else if (accuracy >= 95)
+			rank = "S";
+		else if (accuracy >= 92)
+			rank = "A";
+		else if (accuracy >= 82)
+			rank = "B";
+		else if (accuracy >= 70)
+			rank = "C";
+		else if (accuracy >= 50)
+			rank = "D";
+		else if (accuracy < 49)
+			rank = "F";
+	}
+
 	function sortByShit(Obj1:Note, Obj2:Note):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
@@ -1675,6 +1728,13 @@ class PlayState extends MusicBeatState
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 
+	function truncateFloat( number : Float, precision : Int): Float {
+		var num = number;
+		num = num * Math.pow(10, precision);
+		num = Math.round( num ) / Math.pow(10, precision);
+		return num;
+		}
+
 	override public function update(elapsed:Float)
 	{
 		#if !debug
@@ -1707,7 +1767,7 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score:" + songScore;
+		scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | " + rank;
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -2008,8 +2068,10 @@ class PlayState extends MusicBeatState
 				{
 					if (daNote.tooLate || !daNote.wasGoodHit)
 					{
-						health -= 0.0475;
+						health -= 0.075;
 						vocals.volume = 0;
+						misses += 1;
+						combo = 0;
 					}
 
 					daNote.active = false;
@@ -2135,16 +2197,26 @@ class PlayState extends MusicBeatState
 		{
 			daRating = 'shit';
 			score = 50;
+			totalNotesHit += 0.05;
+			fc = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad';
 			score = 100;
+			totalNotesHit += 0.10;
+			fc = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good';
 			score = 200;
+			totalNotesHit += 0.65;
+			fc = false;
+		}
+		else
+		{
+			totalNotesHit += 1;
 		}
 
 		songScore += score;
@@ -2296,6 +2368,8 @@ class PlayState extends MusicBeatState
 
 			var ignoreList:Array<Int> = [];
 
+			var canMiss:Bool = !MainMenuState.newInput;
+
 			notes.forEachAlive(function(daNote:Note)
 			{
 				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
@@ -2306,6 +2380,8 @@ class PlayState extends MusicBeatState
 
 					ignoreList.push(daNote.noteData);
 				}
+				
+				canMiss = true;
 			});
 
 			if (possibleNotes.length > 0)
@@ -2462,7 +2538,9 @@ class PlayState extends MusicBeatState
 	}
 
 	function noteMiss(direction:Int = 1):Void
-	{
+	{	
+		if(MainMenuState.newInput) return;
+
 		if (!boyfriend.stunned)
 		{
 			health -= 0.04;
@@ -2470,8 +2548,9 @@ class PlayState extends MusicBeatState
 			{
 				gf.playAnim('sad');
 			}
-			combo = 0;
 
+			misses += 1;
+			combo = 0;
 			songScore -= 10;
 
 			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
@@ -2497,6 +2576,8 @@ class PlayState extends MusicBeatState
 				case 3:
 					boyfriend.playAnim('singRIGHTmiss', true);
 			}
+
+			updateAccuracy();
 		}
 	}
 
@@ -2517,12 +2598,19 @@ class PlayState extends MusicBeatState
 			noteMiss(2);
 		if (rightP)
 			noteMiss(3);
+
+		if (MainMenuState.newInput) return;
+
+		updateAccuracy();
 	}
 
 	function noteCheck(keyP:Bool, note:Note):Void
 	{
 		if (keyP)
+		{
 			goodNoteHit(note);
+			updateAccuracy();
+		}
 		else
 		{
 			badNoteCheck();
