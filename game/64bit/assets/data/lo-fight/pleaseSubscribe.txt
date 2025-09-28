@@ -1,8 +1,0 @@
-:dad:enter:..Who-
-:bf:enter:beep boop
-:dad:enter:oh, you two.
-:dad:enter:Would both of you kindly leave me alone? I don't want anyone knowin' I'm here.
-:bf:enter:bip boop beep 
-:dad:enter:...Listen, I ain't lookin' for trouble tonight, just leave and all will be cool.
-:bf:enter:beepo bap skeboop 
-:dad:enter:...
